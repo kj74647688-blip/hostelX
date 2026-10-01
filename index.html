@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HostelX Chat</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#edf2ff}
+.container{max-width:1100px;margin:25px auto;padding:15px}
+.card{background:#121d31;border:1px solid #2b3b57;border-radius:15px;padding:20px;margin-bottom:15px}
+h1,h2,h3{margin-top:0}
+.muted{color:#9eacc5}
+.hidden{display:none!important}
+input,button{font:inherit;padding:11px;border-radius:8px;border:1px solid #354968;background:#0c1729;color:white}
+input{width:100%;margin:7px 0 12px}
+button{background:#356df3;border:0;cursor:pointer;margin:4px}
+button:hover{filter:brightness(1.12)}
+.secondary{background:#2a3a54}
+.grid{display:grid;grid-template-columns:300px 1fr;gap:15px}
+.user{padding:8px;border-bottom:1px solid #2d3e5c}
+.chat-button{width:100%;display:block;text-align:left}
+.messages{height:350px;overflow-y:auto;background:#0b1526;border-radius:9px;padding:12px;margin:12px 0}
+.message{background:#1a2942;padding:10px;border-radius:9px;margin:7px 0;overflow-wrap:anywhere}
+.message img{display:block;max-width:min(100%,420px);max-height:320px;object-fit:contain;border-radius:8px;margin-top:8px}
+.row{display:flex;gap:8px;align-items:center}
+.row input{flex:1}
+.row input[type=file]{flex:0 1 190px;padding:7px;font-size:13px}
+.error{color:#ff9999}
+.success{color:#91edaf}
+hr{border:0;border-top:1px solid #2c3b56;margin:18px 0}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.row{flex-wrap:wrap}.row input[type=file]{flex-basis:160px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="card">
+<h1>HostelX Chat</h1>
+<p class="muted">A private place for friends to chat</p>
+</header>
+
+<section id="loginPage" class="card">
+<h2>Login to HostelX</h2>
+<label for="loginId">Login ID</label>
+<input id="loginId" placeholder="user1.hostelx.in" autocomplete="username">
+<label for="loginPassword">Password</label>
+<input id="loginPassword" type="password" placeholder="Initial password: user1" autocomplete="current-password">
+<button onclick="login()">Login</button>
+<p class="muted">Initial accounts: user1.hostelx.in to user50.hostelx.in</p>
+<div id="loginError" class="error"></div>
+</section>
+
+<section id="setupPage" class="card hidden">
+<h2>Set up your account</h2>
+<p class="muted">Choose a display name and a new password.</p>
+<label for="displayName">Your name</label>
+<input id="displayName" placeholder="Enter your name" autocomplete="name">
+<label for="newPassword">New password</label>
+<input id="newPassword" type="password" placeholder="Choose a password" autocomplete="new-password">
+<button onclick="saveAccount()">Save account</button>
+<div id="setupError" class="error"></div>
+</section>
+
+<section id="appPage" class="hidden">
+<div class="card">
+<span id="welcome"></span>
+<button class="secondary" onclick="logout()">Logout</button>
+</div>
+<div class="grid">
+<aside>
+<section id="adminPanel" class="card hidden">
+<h2>Admin Portal</h2>
+<h3>Registered Users</h3>
+<div id="userList"></div>
+<hr>
+<h3>Create New Chat</h3>
+<label for="groupName">Group name</label>
+<input id="groupName" placeholder="Friends Group">
+<label for="groupPassword">Group password</label>
+<input id="groupPassword" type="password" placeholder="At least 6 characters">
+<p class="muted">Select users to add</p>
+<div id="memberList"></div>
+<button onclick="createGroup()">Create Group</button>
+<div id="adminMessage"></div>
+</section>
+<section class="card">
+<h2>Your Chats</h2>
+<div id="chatList"></div>
+</section>
+</aside>
+<main class="card">
+<h2 id="chatTitle">Select a chat</h2>
+<div id="passwordPanel" class="hidden">
+<p class="muted">Enter the group password to open this chat.</p>
+<input id="chatPassword" type="password" placeholder="Group password">
+<button onclick="openChat()">Open Chat</button>
+<div id="chatError" class="error"></div>
+</div>
+<div id="chatRoom" class="hidden">
+<div id="messages" class="messages"></div>
+<div class="row">
+<input id="messageInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()">
+<input id="photoInput" type="file" accept="image/png,image/jpeg,image/gif,image/webp" aria-label="Choose a photo">
+<button onclick="sendMessage()">Send</button>
+</div>
+<p class="muted">Photos: PNG, JPG, GIF or WebP, up to 3 MB.</p>
+<div id="messageError" class="error"></div>
+</div>
+</main>
+</div>
+</section>
+</div>
+<script src="/app.js" defer></script>
+</body>
+</html>
